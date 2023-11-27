@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,5 +64,11 @@ public class StudentController {
         Student Student = studentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Student Id:" + id));
         studentRepository.delete(Student);
         return "redirect:/index";
+    }
+
+    @GetMapping("/searchstudent")
+    public String searchStudents(@RequestParam(name = "keyword") String keyword, Model model) {
+        model.addAttribute("students",studentRepository.searchStudent(keyword));
+        return "index";
     }
 }
